@@ -1,4 +1,5 @@
 ﻿
+//Övning 2
 using System.Numerics;
 using System.Runtime.CompilerServices;
 
@@ -6,104 +7,160 @@ namespace LoopsAndStrings
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static void Main(string[] args) //Execution starts
         {
-            bool isAlive = true;
-            uint customerAge;
+            StartMain();
             
+        }
+
+        //Start method
+        private static void StartMain()
+        {
+            //Boolean menu variable
+            bool isAlive = true;
+
             do
-            {
+            {                
                 Menu.ShowMainMenu();
                 uint input = Input.AskForUInt("Val ");
+                
+                //Menu alternatives
                 switch (input)
                 {
-                    case Menu.Quit:
+                    case Menu.Quit: // Exit program
                         isAlive = false;
                         break;
-                    case Menu.AgeCheck:
-                        customerAge = Input.AskForUInt("Ålder ");
-                        //int price = Price(customerAge);
-                        DisplayPrice(customerAge, Price(customerAge));
+                
+                    case Menu.AgeCheck: //Calculate the price
+                        DisplayPrice();
                         break;
-                    case Menu.Group:
-                        int totalAmount = 0;
-                        uint numberOfCustomers = Input.AskForUInt("Antal besökare: ");
-                        for (int i = 0; i < numberOfCustomers; i++)
-                        {
-                            customerAge = Input.AskForUInt("Ålder ");
-                            totalAmount += Price(customerAge);
-                        }
-                        Console.WriteLine($"\nAntal personer: {numberOfCustomers}");
-                        Console.WriteLine($"Totalkostnad: {totalAmount}kr");
+                 
+                    case Menu.Group: // Calculate the price for a group
+                        DisplayGroupPrice();
                         break;
-                    case Menu.MPrintTenTimes:
+                
+                    case Menu.MPrintTenTimes: //Print a string ten times
                         PrintTenTimes();
                         break;
-                    case Menu.MThirdWord:
+                 
+                    case Menu.MThirdWord: //Extract the third word from a string
                         ThirdWord();
                         break;
-                    default:
+                
+                    default: //If no condition is met
                         Console.WriteLine("Wrong input");
                         break;
                 }
             }
             while (isAlive);
         }
-
-        private static void ThirdWord()
+        
+        private static int Price(uint age)
         {
-            throw new NotImplementedException();
-        }
+            //Returns the price in kr for a cinema ticket based on customer age
+            if (age < 20)
+            {
+                if (age < 5)
+                {
+                    return 0; //Free if under 5 years old
+                }
+                else
+                {
+                    return 80;
+                }          
+            }
 
+            else if (age > 64)
+            {
+                if (age >= 100)
+                { 
+                    return 0; //Free if over 100 years old
+                }
+                else 
+                { 
+                    return 90; 
+                }
+                
+            }
+            else
+            {
+                return 120;
+            }
+        }
+        
+        private static void DisplayPrice()
+        {
+            // Displays the price for a cinema ticket.
+            uint customerAge;
+            customerAge = Input.AskForUInt("Ålder ");
+            int price = Price(customerAge);
+
+            if (customerAge < 20)
+            {
+                if (customerAge < 5)
+                {
+                    Console.WriteLine("Gratis för barn under fem år");
+                }
+                else
+                {
+                    Console.WriteLine($"Ungdomspris: {price}kr");
+                }
+            }
+            else if (customerAge > 64)
+            {
+                if (customerAge >= 100)
+                {
+                    Console.WriteLine("Gratis för personer över 100 år");
+                }
+                else
+                {
+                    Console.WriteLine($"Pensionärspris: {price}kr"); ;
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Standardpris: {price}kr"); ;
+            }
+        }
+        
+        private static void DisplayGroupPrice()
+        {
+            // Displays the price for a group of moviegoers.
+            int totalAmount = 0;
+            uint customerAge;
+            uint numberOfCustomers = Input.AskForUInt("Antal besökare: ");
+            for (int i = 0; i < numberOfCustomers; i++)
+            {
+                customerAge = Input.AskForUInt("Ålder ");
+                totalAmount += Price(customerAge);
+            }
+            Console.WriteLine($"\nAntal personer: {numberOfCustomers}");
+            Console.WriteLine($"Totalkostnad: {totalAmount}kr");
+        }
+        
         private static void PrintTenTimes()
         {
+            // Prints a string ten times
             string inputString = Input.AskForString("Skriv en text");
             for (int i = 0; i < 10; i++)
             {
 
-                Console.Write($"{i+1}. {inputString}, ");
+                Console.Write($"{i + 1}. {inputString}, ");
             }
 
             Console.WriteLine();
         }
-
-        private static int Price(uint age)
+        
+        private static void ThirdWord()
         {
-            
-            if (age < 20)
-            {
-                return 80;
-            }
-            else if (age > 64)
-            {
-                return 90;
-            }
-            else 
-            {
-                return 120;
-            }
-
+            // Extracts the third word from a string 
+            string inputString = Input.AskForString("Skriv en mening med minst tre ord");
+            // Split the string and remove all whitespaces and empty strings
+            var ordLista = inputString.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            // Display the third word
+            Console.WriteLine(ordLista[2]);
         }
-
-        private static void DisplayPrice(uint age, int price)
-        {
-            
-            
-            if (age < 20)
-            {
-                Console.WriteLine($"Ungdomspris: {price}kr");
-            }
-            else if (age > 64)
-            {
-                Console.WriteLine($"Pensionärspris: {price}kr");
-            }
-            else
-            {
-                Console.WriteLine($"Standardpris: {price}kr");
-            }
-
-        }
-
+        //Menu helper class
         private static class Menu
         {
             public const uint Quit = 0;
@@ -115,7 +172,7 @@ namespace LoopsAndStrings
             public static void ShowMainMenu()
             {
                 
-                Console.WriteLine("\nMainMenu - Write your choice and press Enter");
+                Console.WriteLine("\nMainMenu - Type your choice and press Enter");
                 Console.WriteLine($"{AgeCheck}: View the price based on customer age" +
                        $"\n{Group}: View the price for a group" +
                        $"\n{MPrintTenTimes}: Display your input 10 times" +
@@ -123,6 +180,7 @@ namespace LoopsAndStrings
                        $"\n{Quit}: Quit");
             }
         }
+        //Input helper class
         private static class Input
         {
             public static string AskForString(string prompt)
@@ -137,7 +195,7 @@ namespace LoopsAndStrings
 
                     if (string.IsNullOrWhiteSpace(answer))
                     {
-                        Console.WriteLine($"You must enter a valid {prompt}");
+                        Console.WriteLine($"Wrong input {prompt}");
                     }
                     else
                     {
@@ -160,7 +218,7 @@ namespace LoopsAndStrings
                     }
                     else
                     {
-                        Console.WriteLine($"Please enter a valid {prompt}");
+                        Console.WriteLine($"Wrong input {prompt}");
                     }
 
 
