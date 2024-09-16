@@ -184,6 +184,7 @@ namespace LoopsAndStrings
         private static class Input
         {
             public static string AskForString(string prompt)
+            //Get inputstring and return if not null or whitespace
             {
                 bool success = false;
                 string answer;
@@ -208,6 +209,7 @@ namespace LoopsAndStrings
             }
 
             public static uint AskForUInt(string prompt)
+            //Get uint value and return if input is a numeric integer and not negative.
             {
                 do
                 {
