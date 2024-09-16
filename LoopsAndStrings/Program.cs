@@ -172,8 +172,8 @@ namespace LoopsAndStrings
             public static void ShowMainMenu()
             {
                 
-                Console.WriteLine("\nMainMenu - Type your choice and press Enter");
-                Console.WriteLine($"{AgeCheck}: View the price based on customer age" +
+                Console.WriteLine("\nMainMenu - Type your choice and press Enter to try various functions");
+                Console.WriteLine($"{AgeCheck}: View the movie ticket price based on customer age" +
                        $"\n{Group}: View the price for a group" +
                        $"\n{MPrintTenTimes}: Display your input 10 times" +
                        $"\n{MThirdWord}: Display the third word in a sentence" +
